@@ -11,6 +11,24 @@ This is the backend repository for **PromptVault**, an AI prompt marketplace bui
 
 ---
 
+## 📂 Project Structure
+The backend follows a highly scalable modular architecture pattern:
+
+```bash
+src/
+├── app.ts                  # Express configurations & middlewares
+├── server.ts               # Database connection and server listening
+├── lib/prisma.ts           # Global prisma client initialization
+├── errors/                 # Error handling classes (AppError)
+└── app/
+    ├── middlewares/        # globalErrorHandler.ts, notFound.ts, auth.ts
+    ├── routes/             # index.ts (central router combining all modules)
+    ├── utils/              # Helper functions (catchAsync, sendResponse)
+    └── modules/            # Organized feature modules (Auth, User, Prompt, Order, Review)
+```
+
+---
+
 ## 💻 Local Setup Instructions
 
 Follow these step-by-step instructions to get the backend running on your local machine.
