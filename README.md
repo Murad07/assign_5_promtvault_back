@@ -82,6 +82,17 @@ Once the server is running, the interactive Swagger UI documentation will be ava
 
 ---
 
+## 🛡️ Admin Access
+To initialize the system with the default Super Admin credentials, simply run the Prisma seed command:
+```bash
+npx prisma db seed
+```
+You can then use these credentials to log in and test the Admin Dashboard:
+- **Email**: `admin@promptvault.com`
+- **Password**: `admin123`
+
+---
+
 ## 📦 Deployment
 
 This backend is designed to be easily deployable to **Vercel** as a serverless function.
