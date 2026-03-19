@@ -3,6 +3,8 @@ import cors from 'cors';
 import router from './app/routes';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import notFound from './app/middlewares/notFound';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
 
 const app: Application = express();
 
@@ -12,6 +14,33 @@ app.use(cors());
 
 // Application Main Routes Route
 app.use('/api', router);
+
+// Swagger Documentation Setup
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'PromptVault API',
+            version: '1.0.0',
+            description: 'API documentation for the PromptVault backend',
+        },
+        servers: [
+            { url: 'http://localhost:5000' }
+        ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
+        },
+    },
+    apis: ['./src/app/modules/**/*.route.ts'], // Read route files for swagger JSDocs
+};
+const swaggerSpecs = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // Root Health Check Route
 app.get('/', (req: Request, res: Response) => {
