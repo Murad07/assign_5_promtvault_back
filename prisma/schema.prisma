@@ -1,13 +1,98 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+// Enums limit fields to only these specific choices
+enum Role {
+  ADMIN
+  SELLER
+  BUYER
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(BUYER)
+  isBlocked Boolean  @default(false) // Admin control
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  prompts  Prompt[]  // Prompts created by a SELLER
+  orders   Order[]   // Orders purchased by a BUYER
+  reviews  Review[]  // Reviews left by a BUYER
+}
+
+model Prompt {
+  id            String   @id @default(uuid())
+  title         String
+  description   String
+  category      String
+  price         Float
+  outputPreview String   // URL to image/video preview
+  secretPrompt  String   // The actual prompt hidden until purchase
+  isBlocked     Boolean  @default(false) // Admin control
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sellerId      String
+  seller        User     @relation(fields: [sellerId], references: [id])
+
+  // Relationships
+  orderItems    OrderItem[]
+  reviews       Review[]
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  totalAmount Float
+  status      OrderStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  buyerId     String
+  buyer       User        @relation(fields: [buyerId], references: [id])
+
+  // Relationships
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  price     Float    // Price captured at checkout time
+  createdAt DateTime @default(now())
+
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  promptId  String
+  prompt    Prompt   @relation(fields: [promptId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int      // 1-5
+  comment   String?  // Optional comment text
+  createdAt DateTime @default(now())
+
+  buyerId   String
+  buyer     User     @relation(fields: [buyerId], references: [id])
+
+  promptId  String
+  prompt    Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
 }
