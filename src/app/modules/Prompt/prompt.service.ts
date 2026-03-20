@@ -36,6 +36,14 @@ const getAllPrompts = async () => {
     return result;
 };
 
+const getMyPrompts = async (sellerId: string) => {
+    const result = await prisma.prompt.findMany({
+        where: { sellerId },
+        orderBy: { createdAt: 'desc' },
+    });
+    return result;
+};
+
 const getSinglePrompt = async (id: string) => {
     const result = await prisma.prompt.findUnique({
         where: { id },
@@ -61,6 +69,7 @@ const deletePrompt = async (id: string) => {
 export const PromptService = {
     createPrompt,
     getAllPrompts,
+    getMyPrompts,
     getSinglePrompt,
     updatePrompt,
     deletePrompt,

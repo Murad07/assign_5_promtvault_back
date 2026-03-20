@@ -26,6 +26,18 @@ const getAllPrompts = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getMyPrompts = catchAsync(async (req: Request, res: Response) => {
+    const sellerId = (req as any).user.id;
+    const result = await PromptService.getMyPrompts(sellerId);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Your prompts retrieved successfully',
+        data: result,
+    });
+});
+
 const getSinglePrompt = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
     const result = await PromptService.getSinglePrompt(id);
@@ -65,6 +77,7 @@ const deletePrompt = catchAsync(async (req: Request, res: Response) => {
 export const PromptController = {
     createPrompt,
     getAllPrompts,
+    getMyPrompts,
     getSinglePrompt,
     updatePrompt,
     deletePrompt,

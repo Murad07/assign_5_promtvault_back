@@ -18,6 +18,21 @@ const router = Router();
  */
 router.get('/', PromptController.getAllPrompts);
 
+// Retrieve mapped Seller's prompts privately
+/**
+ * @swagger
+ * /api/prompts/my-prompts:
+ *   get:
+ *     summary: Retrieve your own prompts (Seller)
+ *     tags: [Prompts]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Your mapped prompts retrieved successfully
+ */
+router.get('/my-prompts', auth('SELLER', 'ADMIN'), PromptController.getMyPrompts);
+
 // Retrieve single Prompt by ID (Public view)
 /**
  * @swagger
