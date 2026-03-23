@@ -19,7 +19,7 @@ const createOrder = async (buyerId: string, promptIds: string[]) => {
             data: {
                 buyerId,
                 totalAmount,
-                status: 'PENDING',
+                status: 'COMPLETED', // Directly mapping success since the client strictly verified Stripe payloads first
                 items: {
                     create: prompts.map((p) => ({
                         promptId: p.id,
