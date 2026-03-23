@@ -6,8 +6,11 @@ const createPaymentIntent = async (amount: number) => {
 
     const stripe = new Stripe(secret);
 
-    // Stripe processes entirely in cents natively
-    const amountInCents = Math.round(amount * 100);
+    // Stripe processes entirely in cents natively (minimum $0.50 USD required mathematically)
+    let amountInCents = Math.round(amount * 100);
+    if (amountInCents < 50) {
+        amountInCents = 50; // Force $0.50 mathematically if the cart total is less.
+    }
 
     const paymentIntent = await stripe.paymentIntents.create({
         amount: amountInCents,
