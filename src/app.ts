@@ -5,6 +5,7 @@ import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import notFound from './app/middlewares/notFound';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
+import path from 'path';
 
 const app: Application = express();
 
@@ -37,7 +38,11 @@ const swaggerOptions = {
             },
         },
     },
-    apis: ['./src/app/modules/**/*.route.ts'], // Read route files for swagger JSDocs
+    // Vercel Serverless deployments require strictly bound absolute CWD paths to parse Globs natively
+    apis: [
+        path.join(process.cwd(), 'src/app/modules/**/*.route.ts'),
+        path.join(process.cwd(), 'dist/app/modules/**/*.route.js') // Fallback for compiled executions
+    ],
 };
 const swaggerSpecs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
