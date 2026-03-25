@@ -28,6 +28,9 @@ const getAllPrompts = async () => {
                     name: true,
                 },
             },
+            reviews: {
+                select: { rating: true }
+            },
             createdAt: true,
             updatedAt: true,
             // Intentionally omitting 'secretPrompt' and 'isBlocked'
@@ -47,6 +50,12 @@ const getMyPrompts = async (sellerId: string) => {
 const getSinglePrompt = async (id: string) => {
     const result = await prisma.prompt.findUnique({
         where: { id },
+        include: {
+            seller: {
+                select: { name: true, email: true },
+            },
+            reviews: true,
+        }
     });
     return result;
 };
