@@ -31,6 +31,9 @@ const getAllPrompts = async () => {
             reviews: {
                 select: { rating: true }
             },
+            _count: {
+                select: { orderItems: true }
+            },
             createdAt: true,
             updatedAt: true,
             // Intentionally omitting 'secretPrompt' and 'isBlocked'
@@ -55,6 +58,9 @@ const getSinglePrompt = async (id: string) => {
                 select: { name: true, email: true },
             },
             reviews: true,
+            _count: {
+                select: { orderItems: true }
+            }
         }
     });
     return result;
