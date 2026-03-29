@@ -7,6 +7,7 @@ const getAllUsers = async () => {
             name: true,
             email: true,
             role: true,
+            isBlocked: true,
             createdAt: true,
         },
         orderBy: { createdAt: 'desc' },
@@ -22,9 +23,12 @@ const updateUserRole = async (id: string, role: any) => {
 };
 
 const deleteUser = async (id: string) => {
+    const user = await prisma.user.findUnique({ where: { id } });
+    if (!user) throw new Error("User strictly not found.");
+
     return await prisma.user.update({
         where: { id },
-        data: { isBlocked: true },
+        data: { isBlocked: !user.isBlocked },
     });
 };
 

@@ -11,13 +11,13 @@ const createPrompt = async (sellerId: string, payload: any) => {
 };
 
 const getAllPrompts = async (query: Record<string, unknown>) => {
-    const { searchTerm, category, sortOrder, page = "1", limit = "100" } = query;
+    const { searchTerm, category, sortOrder, page = "1", limit = "100", includeBlocked } = query;
 
     const pageNum = Number(page);
     const limitNum = Number(limit);
     const skip = (pageNum - 1) * limitNum;
 
-    const whereCondition: any = { isBlocked: false };
+    const whereCondition: any = includeBlocked === 'true' ? {} : { isBlocked: false };
 
     if (category && category !== 'ALL') {
         whereCondition.category = category;
@@ -47,6 +47,7 @@ const getAllPrompts = async (query: Record<string, unknown>) => {
             price: true,
             outputPreview: true,
             sellerId: true,
+            isBlocked: true,
             seller: {
                 select: { name: true },
             },
@@ -103,9 +104,12 @@ const updatePrompt = async (id: string, payload: any) => {
 };
 
 const deletePrompt = async (id: string) => {
+    const prompt = await prisma.prompt.findUnique({ where: { id } });
+    if (!prompt) throw new Error("Prompt exclusively not found.");
+
     const result = await prisma.prompt.update({
         where: { id },
-        data: { isBlocked: true },
+        data: { isBlocked: !prompt.isBlocked },
     });
     return result;
 };
