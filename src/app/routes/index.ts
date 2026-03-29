@@ -5,6 +5,7 @@ import { OrderRoutes } from '../modules/Order/order.route';
 import { ReviewRoutes } from '../modules/Review/review.route';
 import { PaymentRoutes } from '../modules/Payment/payment.route';
 import { UserRoutes } from '../modules/User/user.route';
+import { WithdrawalRoutes } from '../modules/Withdrawal/withdrawal.route';
 
 const router = Router();
 
@@ -17,6 +18,7 @@ const moduleRoutes: TModuleRoute[] = [
     { path: '/reviews', route: ReviewRoutes },
     { path: '/payments', route: PaymentRoutes },
     { path: '/users', route: UserRoutes },
+    { path: '/withdrawals', route: WithdrawalRoutes },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

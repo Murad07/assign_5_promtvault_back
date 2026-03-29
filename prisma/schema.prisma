@@ -34,9 +34,28 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relationships
-  prompts  Prompt[]  // Prompts created by a SELLER
-  orders   Order[]   // Orders purchased by a BUYER
-  reviews  Review[]  // Reviews left by a BUYER
+  prompts     Prompt[]      // Prompts created by a SELLER
+  orders      Order[]       // Orders purchased by a BUYER
+  reviews     Review[]      // Reviews left by a BUYER
+  withdrawals Withdrawal[]  // Requested withdrawals by a SELLER
+}
+
+enum WithdrawalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Withdrawal {
+  id        String           @id @default(uuid())
+  amount    Float            // The net requested amount
+  fee       Float            // The exact 5% cut PromptVault captures
+  status    WithdrawalStatus @default(PENDING)
+  
+  sellerId  String
+  seller    User             @relation(fields: [sellerId], references: [id])
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 }
 
 model Prompt {
