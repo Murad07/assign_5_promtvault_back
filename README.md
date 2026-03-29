@@ -12,7 +12,7 @@ The strictly validated, entirely secure Express.js Serverless API structure powe
 
 ## 🌐 Live URLs
 - **Live Frontend App:** [https://assign-5-promtvault-front.vercel.app/](https://assign-5-promtvault-front.vercel.app/)
-- **Live Backend API:** *(Vercel Hosted Core)*
+- **Live Backend API:** [https://assign-5-promtvault-back.vercel.app/](https://assign-5-promtvault-back.vercel.app/)
 
 ## 🚀 Features (Key Functional Integrations)
 - **Role Permissions Middleware:** Express strictly rejects Seller logic from Buyers, and natively prevents generic configurations traversing Admin APIs.

@@ -103,8 +103,9 @@ const updatePrompt = async (id: string, payload: any) => {
 };
 
 const deletePrompt = async (id: string) => {
-    const result = await prisma.prompt.delete({
+    const result = await prisma.prompt.update({
         where: { id },
+        data: { isBlocked: true },
     });
     return result;
 };

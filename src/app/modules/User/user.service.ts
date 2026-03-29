@@ -22,8 +22,9 @@ const updateUserRole = async (id: string, role: any) => {
 };
 
 const deleteUser = async (id: string) => {
-    return await prisma.user.delete({
+    return await prisma.user.update({
         where: { id },
+        data: { isBlocked: true },
     });
 };
 
