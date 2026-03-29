@@ -10,7 +10,11 @@ The strictly validated, entirely secure Express.js Serverless API structure powe
 - **Payment Pipeline:** Native Stripe Server configurations blocking invalid constraints before DB injection.
 - **Documentation:** Integrated Swagger JSDoc
 
-## 🚀 Key Functional Integrations
+## 🌐 Live URLs
+- **Live Frontend App:** [https://assign-5-promtvault-front.vercel.app/](https://assign-5-promtvault-front.vercel.app/)
+- **Live Backend API:** *(Vercel Hosted Core)*
+
+## 🚀 Features (Key Functional Integrations)
 - **Role Permissions Middleware:** Express strictly rejects Seller logic from Buyers, and natively prevents generic configurations traversing Admin APIs.
 - **Seamless Transactions:** Explicit API endpoints securely parsing Stripe payment intents bypassing arbitrary payload mismatches intrinsically.
 - **Aggregated Statistic Engine:** Robust `GET /api/users/statistics` algorithm dynamically extracting different aggregations exactly mapped down through native Role evaluation states.
