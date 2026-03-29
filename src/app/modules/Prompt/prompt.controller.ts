@@ -16,13 +16,14 @@ const createPrompt = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllPrompts = catchAsync(async (req: Request, res: Response) => {
-    const result = await PromptService.getAllPrompts();
+    const result = await PromptService.getAllPrompts(req.query);
 
     sendResponse(res, {
         statusCode: 200,
         success: true,
         message: 'Prompts retrieved successfully',
-        data: result,
+        data: result.data,
+        meta: result.meta
     });
 });
 

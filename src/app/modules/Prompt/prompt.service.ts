@@ -10,11 +10,35 @@ const createPrompt = async (sellerId: string, payload: any) => {
     return result;
 };
 
-const getAllPrompts = async () => {
+const getAllPrompts = async (query: Record<string, unknown>) => {
+    const { searchTerm, category, sortOrder, page = "1", limit = "100" } = query;
+
+    const pageNum = Number(page);
+    const limitNum = Number(limit);
+    const skip = (pageNum - 1) * limitNum;
+
+    const whereCondition: any = { isBlocked: false };
+
+    if (category && category !== 'ALL') {
+        whereCondition.category = category;
+    }
+
+    if (searchTerm) {
+        whereCondition.OR = [
+            { title: { contains: searchTerm as string, mode: 'insensitive' } },
+            { description: { contains: searchTerm as string, mode: 'insensitive' } },
+        ];
+    }
+
+    let orderBy: any = { createdAt: 'desc' };
+    if (sortOrder === 'PRICE_ASC') orderBy = { price: 'asc' };
+    if (sortOrder === 'PRICE_DESC') orderBy = { price: 'desc' };
+
     const result = await prisma.prompt.findMany({
-        where: {
-            isBlocked: false,
-        },
+        where: whereCondition,
+        skip,
+        take: limitNum,
+        orderBy,
         select: {
             id: true,
             title: true,
@@ -24,22 +48,26 @@ const getAllPrompts = async () => {
             outputPreview: true,
             sellerId: true,
             seller: {
-                select: {
-                    name: true,
-                },
+                select: { name: true },
             },
-            reviews: {
-                select: { rating: true }
-            },
-            _count: {
-                select: { orderItems: true }
-            },
+            reviews: { select: { rating: true } },
+            _count: { select: { orderItems: true } },
             createdAt: true,
             updatedAt: true,
-            // Intentionally omitting 'secretPrompt' and 'isBlocked'
         },
     });
-    return result;
+
+    const total = await prisma.prompt.count({ where: whereCondition });
+
+    return {
+        data: result,
+        meta: {
+            page: pageNum,
+            limit: limitNum,
+            total,
+            totalPages: Math.ceil(total / limitNum)
+        }
+    };
 };
 
 const getMyPrompts = async (sellerId: string) => {
