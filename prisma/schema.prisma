@@ -47,15 +47,16 @@ enum WithdrawalStatus {
 }
 
 model Withdrawal {
-  id        String           @id @default(uuid())
-  amount    Float            // The net requested amount
-  fee       Float            // The exact 5% cut PromptVault captures
-  status    WithdrawalStatus @default(PENDING)
+  id            String           @id @default(uuid())
+  amount        Float            // The net requested amount
+  fee           Float            // The exact 5% cut PromptVault captures
+  payoutAddress String           // The destination PayPal Email or Bank Account target
+  status        WithdrawalStatus @default(PENDING)
   
-  sellerId  String
-  seller    User             @relation(fields: [sellerId], references: [id])
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+  sellerId      String
+  seller        User             @relation(fields: [sellerId], references: [id])
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
 }
 
 model Prompt {

@@ -5,8 +5,8 @@ import { WithdrawalService } from './withdrawal.service';
 
 const requestWithdrawal = catchAsync(async (req: Request, res: Response) => {
     const user = (req as any).user;
-    const { amount } = req.body;
-    const result = await WithdrawalService.requestWithdrawal(user.id, Number(amount));
+    const { amount, payoutAddress } = req.body;
+    const result = await WithdrawalService.requestWithdrawal(user.id, Number(amount), payoutAddress);
     sendResponse(res, { statusCode: 201, success: true, message: 'Withdrawal safely requested natively', data: result });
 });
 

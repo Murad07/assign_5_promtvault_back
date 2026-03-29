@@ -1,7 +1,8 @@
 import prisma from '../../../lib/prisma';
 
-const requestWithdrawal = async (sellerId: string, amount: number) => {
+const requestWithdrawal = async (sellerId: string, amount: number, payoutAddress: string) => {
     if (amount < 10) throw new Error("Minimum withdrawal constraint is exactly $10 natively.");
+    if (!payoutAddress || payoutAddress.trim().length === 0) throw new Error("A valid Payout PayPal Email or Bank Target organically required natively.");
 
     const sellerSales = await prisma.orderItem.findMany({
         where: { prompt: { sellerId } }
@@ -23,6 +24,7 @@ const requestWithdrawal = async (sellerId: string, amount: number) => {
         data: {
             amount: amount - fee,
             fee: fee,
+            payoutAddress,
             sellerId: sellerId
         }
     });
