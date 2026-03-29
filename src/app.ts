@@ -38,11 +38,7 @@ const swaggerOptions = {
             },
         },
     },
-    // Vercel Serverless deployments require strictly bound absolute CWD paths to parse Globs natively
-    apis: [
-        path.join(process.cwd(), 'src/app/modules/**/*.route.ts'),
-        path.join(process.cwd(), 'dist/app/modules/**/*.route.js') // Fallback for compiled executions
-    ],
+    apis: ['./src/app/modules/**/*.route.ts'], // Read route files for swagger JSDocs,
 };
 const swaggerSpecs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
