@@ -30,15 +30,31 @@ const requestWithdrawal = async (sellerId: string, amount: number) => {
 
 const getWithdrawals = async (userId: string, role: string) => {
     if (role === 'SELLER') {
-        return await (prisma as any).withdrawal.findMany({
+        const withdrawals = await (prisma as any).withdrawal.findMany({
             where: { sellerId: userId },
             orderBy: { createdAt: 'desc' }
         });
+
+        const sellerSales = await prisma.orderItem.findMany({
+            where: { prompt: { sellerId: userId } }
+        });
+        const totalSales = sellerSales.reduce((acc: number, current: any) => acc + current.price, 0);
+
+        const pastWithdrawals = await (prisma as any).withdrawal.findMany({
+            where: { sellerId: userId, status: { in: ["APPROVED", "PENDING"] } }
+        });
+        const totalWithdrawn = pastWithdrawals.reduce((acc: number, current: any) => acc + current.amount + current.fee, 0);
+
+        return {
+            items: withdrawals,
+            availableBalance: totalSales - totalWithdrawn
+        };
     } else {
-        return await (prisma as any).withdrawal.findMany({
+        const withdrawals = await (prisma as any).withdrawal.findMany({
             include: { seller: { select: { email: true, name: true } } },
             orderBy: { createdAt: 'desc' }
         });
+        return { items: withdrawals };
     }
 };
 
