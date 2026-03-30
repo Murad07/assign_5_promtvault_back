@@ -15,9 +15,13 @@ The strictly validated, entirely secure Express.js Serverless API structure powe
 - **Live Backend API:** [https://assign-5-promtvault-back.vercel.app/](https://assign-5-promtvault-back.vercel.app/)
 
 ## 🚀 Features (Key Functional Integrations)
-- **Role Permissions Middleware:** Express strictly rejects Seller logic from Buyers, and natively prevents generic configurations traversing Admin APIs.
-- **Seamless Transactions:** Explicit API endpoints securely parsing Stripe payment intents bypassing arbitrary payload mismatches intrinsically.
-- **Aggregated Statistic Engine:** Robust `GET /api/users/statistics` algorithm dynamically extracting different aggregations exactly mapped down through native Role evaluation states.
+
+- **Secure Authentication & Authorization**: Robust JWT system with strict Role Permissions middleware rejecting unauthorized cross-role interactions.
+- **Prompt Vault Architecture**: Structured CRUD handling for Sellers to map dynamic frameworks alongside Buyer purchasing channels.
+- **Seamless Transactions**: Explicit API endpoints securely parsing Stripe payment intents natively bypassing arbitrary payload mismatches.
+- **Aggregated Statistic Engine**: Robust `GET /api/users/statistics` algorithm dynamically extracting role-based aggregations accurately mapped via database relations.
+- **Relational Data Storage**: Prisma ORM connected natively to PostgreSQL mapped schemas handling strict database constraints.
+- **Integrated Documentation**: Swagger JSDoc implemented to structure and map out native backend interactions.
 
 ## ⚙️ Local Server Setup 
 
