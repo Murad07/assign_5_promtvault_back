@@ -65,5 +65,6 @@ router.post('/register', AuthController.register);
  *         description: Successfully authenticated, returns JWT token
  */
 router.post('/login', AuthController.login);
+router.post('/google-login', AuthController.googleLogin);
 
 export const AuthRoutes = router;
