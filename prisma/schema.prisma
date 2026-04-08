@@ -117,3 +117,13 @@ model Review {
   promptId  String
   prompt    Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
 }
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
