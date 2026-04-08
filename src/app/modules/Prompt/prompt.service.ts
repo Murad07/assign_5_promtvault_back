@@ -11,7 +11,7 @@ const createPrompt = async (sellerId: string, payload: any) => {
 };
 
 const getAllPrompts = async (query: Record<string, unknown>) => {
-    const { searchTerm, category, sortOrder, page = "1", limit = "100", includeBlocked } = query;
+    const { searchTerm, category, sortOrder, page = "1", limit = "100", includeBlocked, minPrice, maxPrice } = query;
 
     const pageNum = Number(page);
     const limitNum = Number(limit);
@@ -21,6 +21,12 @@ const getAllPrompts = async (query: Record<string, unknown>) => {
 
     if (category && category !== 'ALL') {
         whereCondition.category = category;
+    }
+
+    if (minPrice || maxPrice) {
+        whereCondition.price = {};
+        if (minPrice) whereCondition.price.gte = Number(minPrice);
+        if (maxPrice) whereCondition.price.lte = Number(maxPrice);
     }
 
     if (searchTerm) {
