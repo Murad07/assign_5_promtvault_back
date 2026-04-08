@@ -63,6 +63,7 @@ const loginUser = async (payload: any) => {
             name: user.name,
             email: user.email,
             role: user.role,
+            createdAt: user.createdAt,
         },
         token,
     };

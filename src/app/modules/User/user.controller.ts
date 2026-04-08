@@ -8,6 +8,12 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, { statusCode: 200, success: true, message: 'Users retrieved successfully', data: result });
 });
 
+const updateProfile = catchAsync(async (req: Request, res: Response) => {
+    const user = (req as any).user;
+    const result = await UserService.updateProfile(user.id, req.body);
+    sendResponse(res, { statusCode: 200, success: true, message: 'Profile updated successfully', data: result });
+});
+
 const updateUserRole = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const { role } = req.body;
@@ -27,4 +33,4 @@ const getStatistics = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, { statusCode: 200, success: true, message: 'Statistics generated successfully', data: result });
 });
 
-export const UserController = { getAllUsers, updateUserRole, deleteUser, getStatistics };
+export const UserController = { getAllUsers, updateProfile, updateUserRole, deleteUser, getStatistics };

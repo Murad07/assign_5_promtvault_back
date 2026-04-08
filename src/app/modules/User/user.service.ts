@@ -14,6 +14,14 @@ const getAllUsers = async () => {
     });
 };
 
+const updateProfile = async (id: string, payload: { name: string }) => {
+    return await prisma.user.update({
+        where: { id },
+        data: { name: payload.name },
+        select: { id: true, name: true, email: true, role: true },
+    });
+};
+
 const updateUserRole = async (id: string, role: any) => {
     return await prisma.user.update({
         where: { id },
@@ -93,4 +101,4 @@ const getStatistics = async (userId: string, role: string) => {
     }
 };
 
-export const UserService = { getAllUsers, updateUserRole, deleteUser, getStatistics };
+export const UserService = { getAllUsers, updateProfile, updateUserRole, deleteUser, getStatistics };
